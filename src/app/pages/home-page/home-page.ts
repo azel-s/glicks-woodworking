@@ -17,7 +17,7 @@ export class HomePage {
   constructor(private productService: ProductService) {}
 
   async ngOnInit(): Promise<void> {
-    const products = await this.productService.getProducts(false);
+    const products = await this.productService.getProducts(true, false);
     this.products.set(products);
   }
 }

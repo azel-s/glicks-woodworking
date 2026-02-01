@@ -1,7 +1,13 @@
-import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import removedMd from 'remove-markdown';
 
-export async function markdownToHtml(markdown: string): Promise<string> {
-  const html = await marked.parse(markdown);
+import { marked } from 'marked';
+
+export function markdownToHtml(markdown: string): string {
+  const html = marked.parse(markdown, { async: false });
   return DOMPurify.sanitize(html);
+}
+
+export function markdownToText(markdown: string): string {
+  return removedMd(markdown).trim();
 }

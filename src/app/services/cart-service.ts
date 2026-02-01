@@ -1,15 +1,13 @@
-import { effect, Injectable, OnInit, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 
-import { CartProduct } from '../models/cart-product';
 import { Product } from '../models/product';
-import { ProductImage } from '../models/product-image';
 import { ProductService } from './product-service';
 
 const CART_PRODUCTS_KEY = 'cart_products';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private products = signal<CartProduct[]>(this.loadFromStorage());
+  private products = signal<Product[]>(this.loadFromStorage());
   private channel = new BroadcastChannel('cart_channel');
 
   constructor(private productService: ProductService) {
@@ -23,15 +21,15 @@ export class CartService {
     };
   }
 
-  getProducts(): readonly CartProduct[] {
+  getProducts(): readonly Product[] {
     return [...this.products()].sort((a, b) => a.title.localeCompare(b.title));
   }
 
-  add(product: Product, images: ProductImage[]) {
+  add(product: Product) {
     const current = this.products();
 
     if (!current.find((p) => p.id === product.id)) {
-      this.products.set([...current, { ...product, images }]);
+      this.products.set([...current, product]);
     }
 
     console.log('Cart products after adding:', this.products());
@@ -60,12 +58,12 @@ export class CartService {
   }
 
   // Private methods to handle localStorage
-  private loadFromStorage(): CartProduct[] {
+  private loadFromStorage(): Product[] {
     const cart = localStorage.getItem(CART_PRODUCTS_KEY);
     return cart ? JSON.parse(cart) : [];
   }
 
-  private saveToStorage(products: CartProduct[]) {
+  private saveToStorage(products: Product[]) {
     localStorage.setItem(CART_PRODUCTS_KEY, JSON.stringify(products));
   }
 }

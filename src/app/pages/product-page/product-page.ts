@@ -3,11 +3,10 @@ import { Component, computed, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Product } from '../../models/product';
-import { ProductImage } from '../../models/product-image';
 
+import { CartService } from '../../services/cart-service';
 import { ProductService } from '../../services/product-service';
 import { markdownToHtml } from '../../utils/markdown';
-import { CartService } from '../../services/cart-service';
 
 @Component({
   selector: 'app-product-page',
@@ -17,7 +16,6 @@ import { CartService } from '../../services/cart-service';
 })
 export class ProductPage implements OnInit {
   product = signal<Product>({} as Product);
-  images = signal<ProductImage[]>([]);
 
   isSold = computed(() => this.product().sold);
   isInCart = computed(() => this.cart.hasProduct(this.product().id));
@@ -38,11 +36,8 @@ export class ProductPage implements OnInit {
       const product = await this.productService.getProductBySlug(slug);
       this.product.set(product);
 
-      const descriptionHtml = await markdownToHtml(product.description);
+      const descriptionHtml = markdownToHtml(product.description);
       this.descriptionHtml.set(descriptionHtml);
-
-      const images = await this.productService.getProductImages(product.id);
-      this.images.set(images);
     } catch (error) {
       console.error('Error fetching product data:', error);
       this.router.navigate(['/404']);
