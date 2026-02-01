@@ -13,13 +13,27 @@ export class CartPage implements OnInit {
 
   availableProducts = computed(() => this.cartService.getProducts().filter((p) => !p.sold));
   soldProducts = computed(() => this.cartService.getProducts().filter((p) => p.sold));
+  totalPrice = computed(() => this.availableProducts().reduce((sum, p) => sum + p.price, 0));
 
   async ngOnInit() {
     await this.cartService.refresh();
   }
 
-  checkout() {
-    alert(`Total amount: ${this.cartService.totalPrice().toFixed(2)}`);
-    this.cartService.clear();
+  async checkout() {
+    if (!this.availableProducts().length) return;
+
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: this.availableProducts() }),
+      });
+
+      const data = await res.json();
+      console.log('Checkout data', data);
+      window.location.href = data.url;
+    } catch (err) {
+      console.error('Checkout error', err);
+    }
   }
 }

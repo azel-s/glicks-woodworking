@@ -10,7 +10,12 @@
 
     @for (product of availableProducts(); track $index) {
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem">
-        <img [src]="product.images?.[0]?.url || 'placeholder.jpg'" alt="" width="80" loading="lazy"/>
+        <img
+          [src]="product.images?.[0]?.url || 'placeholder.jpg'"
+          alt=""
+          width="80"
+          loading="lazy"
+        />
         <p>{{ product.title }}</p>
         <p>{{ product.price | currency }}</p>
         <button (click)="cartService.remove(product.id)">Remove</button>
@@ -23,7 +28,12 @@
 
     @for (product of soldProducts(); track $index) {
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem">
-        <img [src]="product.images?.[0]?.url || 'assets/placeholder.png'" alt="" width="80" loading="lazy"/>
+        <img
+          [src]="product.images?.[0]?.url || 'assets/placeholder.png'"
+          alt=""
+          width="80"
+          loading="lazy"
+        />
         <p>{{ product.title }}</p>
         <p>{{ product.price | currency }}</p>
         <button (click)="cartService.remove(product.id)">Remove</button>
@@ -33,7 +43,7 @@
 
   @if (cartService.getProducts().length > 0) {
     <div>
-      <p>Total: {{ cartService.totalPrice() | currency }}</p>
+      <p>Total: {{ totalPrice() | currency }}</p>
       <button (click)="checkout()">Checkout</button>
       <button (click)="cartService.clear()">Clear Cart</button>
     </div>

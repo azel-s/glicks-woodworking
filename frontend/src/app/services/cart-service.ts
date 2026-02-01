@@ -47,10 +47,6 @@ export class CartService {
     return !!this.products().find((p) => p.id === productId);
   }
 
-  totalPrice(): number {
-    return this.products().reduce((sum, p) => sum + p.price, 0);
-  }
-
   async refresh() {
     const ids = this.products().map((product) => product.id);
     const updateProducts = await this.productService.getCartProductsByIds(ids);
