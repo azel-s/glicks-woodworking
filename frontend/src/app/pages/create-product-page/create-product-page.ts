@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../models/product';
-import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -17,11 +16,22 @@ interface TempProductImage {
 
 @Component({
   selector: 'create-product-page',
-  imports: [FormsModule, DialogModule, InputTextModule, TextareaModule, InputNumberModule, ButtonModule],
+  imports: [FormsModule, InputTextModule, TextareaModule, InputNumberModule, ButtonModule],
   templateUrl: './create-product-page.html',
   styleUrl: './create-product-page.scss',
 })
 export class CreateProductPage implements OnDestroy {
+  get missingRequirements(): string[] {
+    const missing = [];
+
+    if (!this.temp_product.title.trim()) missing.push('Title');
+    if (!this.temp_product.slug.trim()) missing.push('Web Slug');
+    if (!this.temp_product.description.trim()) missing.push('Description');
+    if (this.temp_images().length === 0) missing.push('at least one image');
+
+    return missing;
+  }
+
   temp_product: Product = {
     id: '',
     title: '',
@@ -32,9 +42,8 @@ export class CreateProductPage implements OnDestroy {
     created_at: '',
     updated_at: '',
   };
-  
   temp_images = signal<TempProductImage[]>([]);
-  temp_description_idx = signal<number | null>(null);
+  imageTouched = false;
 
   addImage(event: Event) {
     const element = event.target as HTMLInputElement;
@@ -50,12 +59,7 @@ export class CreateProductPage implements OnDestroy {
     element.value = '';
   }
 
-  updateImageDescription(event: Event): void {
-    const index = this.temp_description_idx();
-    if (index === null) {
-      return;
-    }
-
+  updateImageDescription(event: Event, index: number): void {
     const description = (event.target as HTMLTextAreaElement).value;
     this.temp_images.update((images) =>
       images.map((image, imageIndex) =>

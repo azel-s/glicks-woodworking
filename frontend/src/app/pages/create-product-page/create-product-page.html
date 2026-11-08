@@ -14,6 +14,9 @@
           pInputText
           id="product-title"
           [(ngModel)]="temp_product.title"
+          #titleModel="ngModel"
+          [invalid]="!temp_product.title.trim() && (titleModel.dirty || titleModel.touched)"
+          required
           placeholder="e.g. Walnut Serving Board"
         />
       </div>
@@ -23,6 +26,9 @@
           pInputText
           id="product-slug"
           [(ngModel)]="temp_product.slug"
+          #slugModel="ngModel"
+          [invalid]="!temp_product.slug.trim() && (slugModel.dirty || slugModel.touched)"
+          required
           placeholder="walnut-serving-board"
         />
       </div>
@@ -32,6 +38,12 @@
           pTextarea
           id="product-description"
           [(ngModel)]="temp_product.description"
+          #descriptionModel="ngModel"
+          [invalid]="
+            !temp_product.description.trim() &&
+            (descriptionModel.dirty || descriptionModel.touched)
+          "
+          required
           placeholder="Describe the materials, details, and craftsmanship."
           rows="4"
           [autoResize]="true"
@@ -52,7 +64,11 @@
     </div>
   </section>
 
-  <section class="form-card image-section" aria-label="Product images">
+  <section
+    class="form-card image-section"
+    [class.image-required]="imageTouched && temp_images().length === 0"
+    aria-label="Product images"
+  >
     <div class="section-heading">
       <div>
         <h2>Product images</h2>
@@ -70,6 +86,7 @@
         label="Add image"
         icon="pi pi-plus"
         [outlined]="true"
+        (onFocus)="imageTouched = true"
         (onClick)="imageInput.click()"
       />
     </div>
@@ -78,7 +95,19 @@
       <div class="image-grid">
         @for (temp_image of temp_images(); track $index) {
           <article class="image-item">
-            <img [src]="temp_image.url" [alt]="'Product image ' + ($index + 1)" />
+            <div class="image-preview">
+              <img [src]="temp_image.url" [alt]="'Product image ' + ($index + 1)" />
+              <div class="image-remove-button">
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  [ariaLabel]="'Remove image ' + ($index + 1)"
+                  (onClick)="removeImage($index)"
+                />
+              </div>
+            </div>
             <div class="image-actions">
               <p-button
                 icon="pi pi-arrow-left"
@@ -98,24 +127,16 @@
                 (onClick)="moveImageBy($index, 1)"
               />
             </div>
-            <p class="image-description">{{ temp_image.description || 'No description yet' }}</p>
-            <div class="image-actions image-actions-bottom">
-              <p-button
-                label="Edit description"
-                icon="pi pi-pencil"
-                [text]="true"
-                size="small"
-                (onClick)="temp_description_idx.set($index)"
-              />
-              <p-button
-                icon="pi pi-trash"
-                severity="danger"
-                [text]="true"
-                [rounded]="true"
-                [ariaLabel]="'Remove image ' + ($index + 1)"
-                (onClick)="removeImage($index)"
-              />
-            </div>
+            <textarea
+              pTextarea
+              class="image-description-editor"
+              [value]="temp_image.description"
+              (input)="updateImageDescription($event, $index)"
+              [attr.aria-label]="'Description for image ' + ($index + 1)"
+              placeholder="Add a description (optional)"
+              rows="1"
+              [autoResize]="true"
+            ></textarea>
           </article>
         }
       </div>
@@ -129,26 +150,15 @@
   </section>
 
   <div class="form-actions">
-    <p-button label="Create product" icon="pi pi-check" />
+    @if (missingRequirements.length) {
+      <p class="form-hint" aria-live="polite">
+        Complete the required fields and add at least one image to create this product.
+      </p>
+    }
+    <p-button
+      label="Create product"
+      icon="pi pi-check"
+      [disabled]="missingRequirements.length > 0"
+    />
   </div>
 </main>
-
-<p-dialog
-  [visible]="temp_description_idx() !== null"
-  (visibleChange)="temp_description_idx.set($event ? temp_description_idx() : null)"
-  header="Image description"
-  [modal]="true"
-  [dismissableMask]="true"
-  [style]="{ width: 'min(28rem, calc(100vw - 2rem))' }"
->
-  <textarea
-    pTextarea
-    class="description-editor"
-    [value]="temp_images()[temp_description_idx()!]?.description"
-    (input)="updateImageDescription($event)"
-    aria-label="Image description"
-    placeholder="Describe this image"
-    rows="5"
-    [autoResize]="true"
-  ></textarea>
-</p-dialog>
