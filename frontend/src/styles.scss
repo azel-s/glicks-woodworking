@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --wood-accent: #8a5a36;
+  --wood-soft: #f5eee7;
+  --wood-canvas: #fcfaf8;
+}
+
+body {
+  margin: 0;
+  background: var(--wood-canvas);
+  color: var(--p-text-color);
+  font-family: var(--p-font-family, system-ui, sans-serif);
+}

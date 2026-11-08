@@ -1,15 +1,12 @@
-import { CurrencyPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { Component, signal } from '@angular/core';
-
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product-service';
+import { ProductCatalog } from '../../components/product-catalog/product-catalog';
 
 @Component({
   selector: 'app-home-page',
-  imports: [RouterLink, CurrencyPipe],
+  imports: [ProductCatalog],
   templateUrl: './home-page.html',
-  styleUrl: './home-page.scss',
 })
 export class HomePage {
   products = signal<Product[]>([]);

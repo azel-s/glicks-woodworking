@@ -1,16 +1,33 @@
-<header>
-  <h1>Glick's Woodworking</h1>
-  <nav>
-    <ul>
-      <li>
-        <a routerLink="/">Home</a>
-      </li>
-      <li>
-        <a routerLink="/sold-products">Sold Products</a>
-      </li>
-      <li>
-        <a routerLink="/cart">Cart [{{ cartService.getProducts().length }}]</a>
-      </li>
-    </ul>
-  </nav>
+<header class="site-header">
+  <div class="header-content">
+    <a class="brand" routerLink="/">Glick's Woodworking</a>
+    <a class="brand-logo" routerLink="/" aria-label="Glick's Woodworking home">
+      <img src="/logo-mark.png" alt="" />
+    </a>
+    <nav aria-label="Main navigation">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Shop</a>
+      <a routerLink="/past-products" routerLinkActive="active">Past work</a>
+      @if (isAdmin()) {
+        <details #adminMenu class="admin-menu">
+          <summary>
+            Admin
+            <i class="pi pi-chevron-down" aria-hidden="true"></i>
+          </summary>
+          <div class="admin-menu-panel">
+            <a routerLink="/create-product" (click)="closeAdminMenu(adminMenu)">
+              <i class="pi pi-plus" aria-hidden="true"></i>
+              Create product
+            </a>
+            <button type="button" [disabled]="signingOut()" (click)="signOut(adminMenu)">
+              <i class="pi pi-sign-out" aria-hidden="true"></i>
+              {{ signingOut() ? 'Signing out…' : 'Sign out' }}
+            </button>
+            @if (signOutError()) {
+              <p class="sign-out-error" role="alert">{{ signOutError() }}</p>
+            }
+          </div>
+        </details>
+      }
+    </nav>
+  </div>
 </header>

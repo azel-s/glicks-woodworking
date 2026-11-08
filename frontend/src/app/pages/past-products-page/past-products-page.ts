@@ -1,17 +1,14 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product-service';
-import { markdownToText } from '../../utils/markdown';
+import { ProductCatalog } from '../../components/product-catalog/product-catalog';
 
 @Component({
-  selector: 'app-sold-products-page',
-  imports: [RouterLink, CurrencyPipe],
-  templateUrl: './sold-products-page.html',
-  styleUrl: './sold-products-page.scss',
+  selector: 'app-past-products-page',
+  imports: [ProductCatalog],
+  templateUrl: './past-products-page.html',
 })
-export class SoldProductsPage implements OnInit {
+export class PastProductsPage implements OnInit {
   products = signal<Product[]>([]);
 
   constructor(private productService: ProductService) {}
@@ -19,7 +16,7 @@ export class SoldProductsPage implements OnInit {
   async ngOnInit() {
     try {
       const products = await this.productService.getProducts(false, true);
-      this.products.set(products.map((p) => ({ ...p, description: markdownToText(p.description) })));
+      this.products.set(products);
     } catch (error) {
       console.error('Error fetching sold products:', error);
     }

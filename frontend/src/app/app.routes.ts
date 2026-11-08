@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './services/admin-guard';
 
 export const routes: Routes = [
   {
@@ -10,16 +11,21 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/product-page/product-page').then((m) => m.ProductPage),
   },
   {
-    path: 'sold-products',
-    loadComponent: () => import('./pages/sold-products-page/sold-products-page').then((m) => m.SoldProductsPage),
+    path: 'past-products',
+    loadComponent: () => import('./pages/past-products-page/past-products-page').then((m) => m.PastProductsPage),
   },
   {
-    path: 'cart',
-    loadComponent: () => import('./pages/cart-page/cart-page').then((m) => m.CartPage),
+    path: 'admin-login',
+    loadComponent: () => import('./pages/admin-login-page/admin-login-page').then((m) => m.AdminLoginPage),
   },
   {
-    path: 'admin',
-    loadComponent: () => import('./pages/admin-page/admin-page').then((m) => m.AdminPage),
+    path: 'admin-setup',
+    loadComponent: () => import('./pages/admin-invite-page/admin-invite-page').then((m) => m.AdminInvitePage),
+  },
+  {
+    path: 'create-product',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/create-product-page/create-product-page').then((m) => m.CreateProductPage),
   },
   {
     path: '**',

@@ -1,0 +1,45 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="admin-login-title">
+    <p class="eyebrow">ADMIN</p>
+    <h1 id="admin-login-title">Sign in</h1>
+    <p class="login-intro">Sign in with your administrator account to manage products.</p>
+
+    @if (errorMessage) {
+      <p class="login-error" role="alert">{{ errorMessage }}</p>
+    }
+
+    <form (ngSubmit)="signIn()">
+      <div class="field">
+        <label for="admin-email">Email</label>
+        <input
+          pInputText
+          id="admin-email"
+          name="email"
+          type="email"
+          [(ngModel)]="email"
+          autocomplete="username"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="admin-password">Password</label>
+        <input
+          pInputText
+          id="admin-password"
+          name="password"
+          type="password"
+          [(ngModel)]="password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+      <p-button
+        type="submit"
+        label="Sign in"
+        icon="pi pi-sign-in"
+        [loading]="submitting"
+        [disabled]="submitting || !email.trim() || !password"
+      />
+    </form>
+  </section>
+</main>
