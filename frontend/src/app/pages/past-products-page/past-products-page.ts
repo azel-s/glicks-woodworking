@@ -6,12 +6,12 @@ import { ProductService } from '../../services/product-service';
 import { markdownToText } from '../../utils/markdown';
 
 @Component({
-  selector: 'app-sold-products-page',
+  selector: 'app-past-products-page',
   imports: [RouterLink, CurrencyPipe],
-  templateUrl: './sold-products-page.html',
-  styleUrl: './sold-products-page.scss',
+  templateUrl: './past-products-page.html',
+  styleUrl: './past-products-page.scss',
 })
-export class SoldProductsPage implements OnInit {
+export class PastProductsPage implements OnInit {
   products = signal<Product[]>([]);
 
   constructor(private productService: ProductService) {}

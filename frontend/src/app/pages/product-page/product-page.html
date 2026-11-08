@@ -1,15 +1,6 @@
 <div>
-  <button (click)="this.cart.add(product())" [disabled]="isSold() || isInCart()">
-    Add to Cart
-  </button>
-  <button>
-    Contact
-  </button>
-
-  @if (isSold()) {
-    <p>This product has already been sold.</p>
-  } @else if (isInCart()) {
-    <p>This product is already in your cart.</p>
+  @for (image of product().images; track $index) {
+    <img [src]="image.url" loading="lazy" />
   }
 
   <h2>{{ product().title }}</h2>
@@ -20,8 +11,5 @@
   <p><strong>Price:</strong></p>
   <p>{{ product().price | currency }}</p>
 
-  <h3>Images:</h3>
-  @for (image of product().images; track $index) {
-    <img [src]="image.url" loading="lazy" />
-  }
+  <button>{{ isSold() ? 'Commision' : 'Inquire' }}</button>
 </div>

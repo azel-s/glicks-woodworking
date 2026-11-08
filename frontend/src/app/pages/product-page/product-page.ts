@@ -1,16 +1,15 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, NgClass } from '@angular/common';
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Product } from '../../models/product';
 
-import { CartService } from '../../services/cart-service';
 import { ProductService } from '../../services/product-service';
 import { markdownToHtml } from '../../utils/markdown';
 
 @Component({
   selector: 'app-product-page',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, NgClass],
   templateUrl: './product-page.html',
   styleUrl: './product-page.scss',
 })
@@ -18,7 +17,6 @@ export class ProductPage implements OnInit {
   product = signal<Product>({} as Product);
 
   isSold = computed(() => this.product().sold);
-  isInCart = computed(() => this.cart.hasProduct(this.product().id));
 
   descriptionHtml = signal<string>('');
 
@@ -26,7 +24,6 @@ export class ProductPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    public cart: CartService,
   ) {}
 
   async ngOnInit() {
