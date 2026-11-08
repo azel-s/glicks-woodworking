@@ -1,0 +1,145 @@
+.product-page {
+  max-width: 1200px;
+  min-height: 65vh;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--p-primary-color);
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  align-items: start;
+  gap: 3rem;
+}
+
+.main-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--p-content-hover-background);
+}
+
+.main-image {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.image-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  background: rgb(0 0 0 / 65%);
+  color: white;
+  line-height: 1.5;
+}
+
+.thumbnail-gallery {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  overflow-x: auto;
+}
+
+.thumbnail-gallery button {
+  flex: 0 0 72px;
+  padding: 3px;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.thumbnail-gallery button.selected {
+  border-color: var(--p-primary-color);
+}
+
+.thumbnail-gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 0.3rem;
+  object-fit: cover;
+}
+
+.product-details {
+  position: sticky;
+  top: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 0.75rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--p-primary-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.product-details h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.product-price {
+  display: block;
+  margin: 1rem 0;
+  font-size: 1.4rem;
+}
+
+.product-description {
+  margin: 1.5rem 0;
+  color: var(--p-text-muted-color);
+  line-height: 1.7;
+}
+
+.contact-actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.contact-actions a:first-child {
+  justify-content: center;
+}
+
+.contact-actions a:last-child {
+  min-width: 8rem;
+  justify-self: center;
+  justify-content: center;
+}
+
+@media (max-width: 760px) {
+  .product-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .product-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .product-details {
+    position: static;
+  }
+}

@@ -1,15 +1,13 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product-service';
 import { markdownToText } from '../../utils/markdown';
+import { ProductCatalog } from '../../components/product-catalog/product-catalog';
 
 @Component({
   selector: 'app-past-products-page',
-  imports: [RouterLink, CurrencyPipe],
+  imports: [ProductCatalog],
   templateUrl: './past-products-page.html',
-  styleUrl: './past-products-page.scss',
 })
 export class PastProductsPage implements OnInit {
   products = signal<Product[]>([]);

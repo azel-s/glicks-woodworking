@@ -11,4 +11,8 @@ export class AdminService {
   async getAdminEmail(): Promise<string> {
     return 's.4bbas@gmail.com';
   }
+
+  async getAdminPhone(): Promise<string> {
+    return '6302478811';
+  }
 }

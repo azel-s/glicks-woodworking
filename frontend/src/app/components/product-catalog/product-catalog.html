@@ -1,0 +1,43 @@
+<main class="catalog-page">
+  <section class="catalog-heading">
+    <p>{{ eyebrow() }}</p>
+    <h1>{{ title() }}</h1>
+    <span>{{ subtitle() }}</span>
+  </section>
+
+  @if (products().length) {
+    <section class="product-grid" [attr.aria-label]="ariaLabel()">
+      @for (product of products(); track product.id) {
+        <article class="product-card">
+          <a class="product-image" [routerLink]="['/product', product.slug]">
+            @if (product.images?.at(0)?.url; as imageUrl) {
+              <img [src]="imageUrl" [alt]="product.title" />
+            } @else {
+              <img src="/placeholder.jpg" [alt]="product.title" />
+            }
+          </a>
+          <div class="product-info">
+            <h2><a [routerLink]="['/product', product.slug]">{{ product.title }}</a></h2>
+            <p>{{ product.description }}</p>
+            <div class="product-card-footer">
+              <strong>{{ product.price | currency }}</strong>
+              <a
+                pButton
+                [routerLink]="['/product', product.slug]"
+                label="View piece"
+                icon="pi pi-arrow-up-right"
+                [text]="true"
+              ></a>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  } @else {
+    <section class="empty-catalog">
+      <i class="pi pi-box" aria-hidden="true"></i>
+      <h2>{{ emptyTitle() }}</h2>
+      <p>{{ emptyDescription() }}</p>
+    </section>
+  }
+</main>

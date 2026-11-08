@@ -1,15 +1,9 @@
-@if (products().length === 0) {
-  <p>No past products available.</p>
-}
-
-<ul>
-  @for (product of products(); track $index) {
-    <li>
-      <h2>
-        <a [routerLink]="['/product', product.slug]">{{ product.title }}</a>
-      </h2>
-      <div [innerHTML]="product.description"></div>
-      <p>Price: {{ product.price | currency }}</p>
-    </li>
-  }
-</ul>
+<app-product-catalog
+  [products]="products()"
+  eyebrow="FROM THE WORKSHOP"
+  title="Past pieces"
+  subtitle="A look at the work that's found a home."
+  ariaLabel="Past products"
+  emptyTitle="No past pieces yet"
+  emptyDescription="Finished pieces will be collected here."
+/>

@@ -1,3 +1,12 @@
-* {
-  background-color: palegoldenrod;
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--p-content-border-color);
+  color: var(--p-text-muted-color);
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
+  padding: 1.25rem;
+  font-size: 0.875rem;
 }

@@ -1,11 +1,9 @@
-<ul>
-  @for (product of products(); track $index) {
-    <li>
-      <h2>
-        <a [routerLink]="['/product', product.slug]">{{ product.title }}</a>
-      </h2>
-      <p>{{ product.description }}</p>
-      <p>Price: {{ product.price | currency }}</p>
-    </li>
-  }
-</ul>
+<app-product-catalog
+  [products]="products()"
+  eyebrow="MADE BY HAND"
+  title="Woodwork made to last."
+  subtitle="Explore one-of-a-kind pieces, made with care in our workshop."
+  ariaLabel="Available products"
+  emptyTitle="New pieces are on the way"
+  emptyDescription="Check back soon to see what's available from the workshop."
+/>

@@ -1,15 +1,64 @@
-<div>
-  @for (image of product().images; track $index) {
-    <img [src]="image.url" loading="lazy" />
-  }
+<main class="product-page">
+  <a class="back-link" routerLink="/">
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    Back to shop
+  </a>
 
-  <h2>{{ product().title }}</h2>
+  <div class="product-layout">
+    <section class="product-gallery" aria-label="Product images">
+      @if (product().images?.length) {
+        <div class="main-image-container">
+          <img
+            class="main-image"
+            [src]="product().images?.at(mainImageIndex())?.url"
+            [alt]="product().title"
+          />
+          @if (product().images?.at(mainImageIndex())?.description) {
+            <p class="image-caption">{{ product().images?.at(mainImageIndex())?.description }}</p>
+          }
+        </div>
+        <div class="thumbnail-gallery">
+          @for (image of product().images; track image.id; let i = $index) {
+            <button
+              type="button"
+              [class.selected]="i === mainImageIndex()"
+              [attr.aria-label]="'Show product image ' + (i + 1)"
+              (click)="mainImageIndex.set(i)"
+            >
+              <img [src]="image.url" [alt]="product().title + ' image ' + (i + 1)" />
+            </button>
+          }
+        </div>
+      } @else {
+        <img class="main-image" src="/placeholder.jpg" [alt]="product().title || 'Product image'" />
+      }
+    </section>
 
-  <p><strong>Description:</strong></p>
-  <div [innerHTML]="descriptionHtml()"></div>
-
-  <p><strong>Price:</strong></p>
-  <p>{{ product().price | currency }}</p>
-
-  <button>{{ isSold() ? 'Commision' : 'Inquire' }}</button>
-</div>
+    <section class="product-details">
+      <p class="eyebrow">{{ isSold() ? 'PAST WORK' : 'HANDCRAFTED' }}</p>
+      <h1>{{ product().title }}</h1>
+      <strong class="product-price">{{ product().price | currency }}</strong>
+      <div class="product-description" [innerHTML]="descriptionHtml()"></div>
+      <div class="contact-actions">
+        @if (admin_email()) {
+          <a
+            pButton
+            [href]="emailLink()"
+            [label]="isSold() ? 'Commission a similar piece' : 'Inquire about this piece'"
+            icon="pi pi-envelope"
+          ></a>
+        }
+        @if (admin_phone()) {
+          <a
+            pButton
+            [href]="phoneLink()"
+            label="Call"
+            icon="pi pi-phone"
+            severity="secondary"
+            [outlined]="true"
+          ></a>
+        }
+      </div>
+    </section>
+  </div>
+</main>

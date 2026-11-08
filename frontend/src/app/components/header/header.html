@@ -1,13 +1,13 @@
-<header>
-  <h1>Glick's Woodworking</h1>
-  <nav>
-    <ul>
-      <li>
-        <a routerLink="/">Home</a>
-      </li>
-      <li>
-        <a routerLink="/past-products">Past Products</a>
-      </li>
-    </ul>
-  </nav>
+<header class="site-header">
+  <div class="header-content">
+    <a class="brand" routerLink="/">Glick's Woodworking</a>
+    <nav aria-label="Main navigation">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Shop</a>
+      <a routerLink="/past-products" routerLinkActive="active">Past work</a>
+      <a class="create-link" routerLink="/create-product">
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        Create product
+      </a>
+    </nav>
+  </div>
 </header>

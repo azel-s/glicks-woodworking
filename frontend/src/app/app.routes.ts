@@ -14,8 +14,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/past-products-page/past-products-page').then((m) => m.PastProductsPage),
   },
   {
-    path: 'admin',
-    loadComponent: () => import('./pages/admin-page/admin-page').then((m) => m.AdminPage),
+    path: 'create-product',
+    loadComponent: () => import('./pages/create-product-page/create-product-page').then((m) => m.CreateProductPage),
   },
   {
     path: '**',

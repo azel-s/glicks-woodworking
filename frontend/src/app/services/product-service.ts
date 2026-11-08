@@ -14,7 +14,8 @@ export class ProductService {
     let query = supabase
       .from('products')
       .select('*, images: product_images(*)')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .order('index', { referencedTable: 'product_images', ascending: true });
     if (!includeAvailable && includeSold) {
       query = query.eq('sold', true);
     } else if (includeAvailable && !includeSold) {
@@ -39,6 +40,7 @@ export class ProductService {
       .from('products')
       .select('*, images: product_images(*)')
       .eq('slug', slug)
+      .order('index', { referencedTable: 'product_images', ascending: true })
       .single();
 
     if (error) {

@@ -1,3 +1,67 @@
-* {
-  background-color: paleturquoise;
+.site-header {
+  border-bottom: 1px solid var(--p-content-border-color);
+  background: var(--p-content-background);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+.brand {
+  color: var(--p-text-color);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+nav > a {
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+}
+
+nav > a.active:not(.create-link),
+nav > a:not(.create-link):hover {
+  color: var(--p-primary-color);
+}
+
+.create-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--p-primary-color);
+  border-radius: 0.5rem;
+  color: var(--p-primary-color);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.create-link:hover {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+@media (max-width: 600px) {
+  .header-content {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
 }
