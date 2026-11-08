@@ -8,10 +8,10 @@ export class AdminService {
   constructor(private supabaseService: SupabaseService) {}
 
   async getContactEmail(): Promise<string> {
-    return 's.4bbas@gmail.com';
+    return 'glickswoodworkingco@gmail.com';
   }
 
   async getContactPhone(): Promise<string> {
-    return '6302478811';
+    return '9376218382';
   }
 }
