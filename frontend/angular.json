@@ -53,10 +53,6 @@
           },
           "configurations": {
             "production": {
-              "outputPath": {
-                "base": "dist/cloudflare",
-                "browser": ""
-              },
               "budgets": [
                 {
                   "type": "initial",
