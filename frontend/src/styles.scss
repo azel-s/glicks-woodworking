@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --wood-accent: #8a5a36;
+  --wood-soft: #f5eee7;
+}
+
 body {
   margin: 0;
   background: var(--p-surface-50);
