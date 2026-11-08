@@ -1,0 +1,11 @@
+[functions.payments-initiate]
+enabled = true
+verify_jwt = false
+import_map = "./functions/payments-initiate/deno.json"
+entrypoint = "./functions/payments-initiate/index.ts"
+
+[functions.payments-webhook]
+enabled = true
+verify_jwt = false
+import_map = "./functions/payments-webhook/deno.json"
+entrypoint = "./functions/payments-webhook/index.ts"

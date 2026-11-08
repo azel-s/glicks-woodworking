@@ -23,7 +23,7 @@ export class CartPage implements OnInit {
     if (!this.availableProducts().length) return;
 
     try {
-      const res = await fetch('/api/checkout', {
+      const res = await fetch('/api/payments-initiate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: this.availableProducts() }),
