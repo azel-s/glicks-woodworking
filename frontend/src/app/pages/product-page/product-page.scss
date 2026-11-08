@@ -4,11 +4,18 @@
   padding: 2rem 1.5rem 4rem;
 }
 
+.page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
   color: var(--p-text-muted-color);
   text-decoration: none;
 }
@@ -112,6 +119,147 @@
   line-height: 1.7;
 }
 
+.edit-image-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.edit-image-heading h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.edit-image-heading p {
+  margin: 0.35rem 0 0;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
+}
+
+.add-image-button {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.add-image-button.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.add-image-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.edit-image-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.edit-image-item {
+  display: grid;
+  grid-template-columns: minmax(100px, 160px) 1fr;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 0.6rem;
+}
+
+.edit-image-item > img {
+  grid-row: span 2;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.35rem;
+  background: var(--wood-soft);
+  object-fit: cover;
+}
+
+.edit-image-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.edit-image-controls span {
+  margin-right: auto;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
+}
+
+.edit-image-item label,
+.edit-fields > label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.edit-image-item textarea,
+.edit-fields input:not([type='checkbox']),
+.edit-fields textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 0.4rem;
+  background: var(--p-content-background);
+  color: var(--p-text-color);
+  font: inherit;
+  font-weight: 400;
+}
+
+.edit-image-item textarea {
+  resize: none;
+}
+
+.edit-fields {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.edit-fields textarea {
+  resize: vertical;
+}
+
+.edit-fields .sold-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 400;
+}
+
+.edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+
+.danger-zone {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--p-red-500, #c00) 40%, transparent);
+  border-radius: 0.75rem;
+}
+
+.edit-error {
+  color: var(--p-red-500, #c00);
+}
+
 .contact-actions {
   display: grid;
   gap: 0.75rem;
@@ -136,6 +284,10 @@
 
   .product-page {
     padding: 1.5rem 1rem 3rem;
+  }
+
+  .edit-image-item {
+    grid-template-columns: 90px 1fr;
   }
 
   .product-details {

@@ -1,0 +1,52 @@
+<main class="invite-page">
+  <section class="invite-card" aria-labelledby="admin-invite-title">
+    <p class="eyebrow">ADMIN INVITATION</p>
+    <h1 id="admin-invite-title">Set your password</h1>
+
+    @if (loading) {
+      <p class="invite-intro">Verifying your invitation…</p>
+    } @else if (isAdminInvite) {
+      <p class="invite-intro">Choose a password to finish setting up your administrator account.</p>
+
+      @if (message) {
+        <p class="invite-message" role="alert">{{ message }}</p>
+      }
+
+      <form (ngSubmit)="setPassword()">
+        <div class="field">
+          <label for="admin-new-password">Password</label>
+          <input
+            pInputText
+            id="admin-new-password"
+            name="password"
+            type="password"
+            [(ngModel)]="password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+        <div class="field">
+          <label for="admin-confirm-password">Confirm password</label>
+          <input
+            pInputText
+            id="admin-confirm-password"
+            name="confirmPassword"
+            type="password"
+            [(ngModel)]="confirmPassword"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+        <p-button
+          type="submit"
+          label="Set password"
+          icon="pi pi-check"
+          [loading]="submitting"
+          [disabled]="submitting || !password || !confirmPassword"
+        />
+      </form>
+    } @else {
+      <p class="invite-message" role="alert">{{ message }}</p>
+    }
+  </section>
+</main>

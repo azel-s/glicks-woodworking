@@ -18,7 +18,7 @@
           </a>
           <div class="product-info">
             <h2><a [routerLink]="['/product', product.slug]">{{ product.title }}</a></h2>
-            <p>{{ product.description }}</p>
+            <p>{{ markdownToText(product.description) }}</p>
             <div class="product-card-footer">
               <strong>{{ product.price | currency }}</strong>
               <a

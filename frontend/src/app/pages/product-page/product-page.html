@@ -1,64 +1,266 @@
 <main class="product-page">
-  <a class="back-link" routerLink="/">
-    <i class="pi pi-arrow-left" aria-hidden="true"></i>
-    Back to shop
-  </a>
+  <div class="page-actions">
+    <a class="back-link" routerLink="/">
+      <i class="pi pi-arrow-left" aria-hidden="true"></i>
+      Back to shop
+    </a>
+    @if (isAdmin() && !isEditing()) {
+      <p-button label="Edit product" icon="pi pi-pencil" (onClick)="startEditing()" />
+    }
+  </div>
 
   <div class="product-layout">
     <section class="product-gallery" aria-label="Product images">
-      @if (product().images?.length) {
-        <div class="main-image-container">
-          <img
-            class="main-image"
-            [src]="product().images?.at(mainImageIndex())?.url"
-            [alt]="product().title"
-          />
-          @if (product().images?.at(mainImageIndex())?.description) {
-            <p class="image-caption">{{ product().images?.at(mainImageIndex())?.description }}</p>
-          }
+      @if (isEditing()) {
+        <div class="edit-image-heading">
+          <div>
+            <h2>Product images</h2>
+            <p>Add, remove, reorder, and caption product photos.</p>
+          </div>
+          <label class="add-image-button" [class.disabled]="editImages().length >= 10">
+            <i class="pi pi-plus" aria-hidden="true"></i>
+            Add images
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              [disabled]="saving() || editImages().length >= 10"
+              (change)="addImage($event)"
+            />
+          </label>
         </div>
-        <div class="thumbnail-gallery">
-          @for (image of product().images; track image.id; let i = $index) {
-            <button
-              type="button"
-              [class.selected]="i === mainImageIndex()"
-              [attr.aria-label]="'Show product image ' + (i + 1)"
-              (click)="mainImageIndex.set(i)"
-            >
-              <img [src]="image.url" [alt]="product().title + ' image ' + (i + 1)" />
-            </button>
+        <div class="edit-image-list">
+          @for (image of editImages(); track $index) {
+            <article class="edit-image-item">
+              <img [src]="image.url" [alt]="'Product image ' + ($index + 1)" />
+              <div class="edit-image-controls">
+                <span>Image {{ $index + 1 }}</span>
+                <p-button
+                  icon="pi pi-arrow-up"
+                  [text]="true"
+                  [disabled]="$index === 0 || saving()"
+                  [ariaLabel]="'Move image ' + ($index + 1) + ' up'"
+                  (onClick)="moveImage($index, -1)"
+                />
+                <p-button
+                  icon="pi pi-arrow-down"
+                  [text]="true"
+                  [disabled]="$index === editImages().length - 1 || saving()"
+                  [ariaLabel]="'Move image ' + ($index + 1) + ' down'"
+                  (onClick)="moveImage($index, 1)"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [disabled]="editImages().length <= 1 || saving()"
+                  [ariaLabel]="'Remove image ' + ($index + 1)"
+                  (onClick)="removeImage($index)"
+                />
+              </div>
+              <label>
+                Image description
+                <textarea
+                  [ngModel]="image.description"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="updateImageDescription($index, $event)"
+                  [disabled]="saving()"
+                  rows="2"
+                ></textarea>
+              </label>
+            </article>
           }
         </div>
       } @else {
-        <img class="main-image" src="/placeholder.jpg" [alt]="product().title || 'Product image'" />
+        @if (product().images?.length) {
+          <div class="main-image-container">
+            <img
+              class="main-image"
+              [src]="product().images?.at(mainImageIndex())?.url"
+              [alt]="product().title"
+            />
+            @if (product().images?.at(mainImageIndex())?.description) {
+              <p class="image-caption">{{ product().images?.at(mainImageIndex())?.description }}</p>
+            }
+          </div>
+          <div class="thumbnail-gallery">
+            @for (image of product().images; track image.id; let i = $index) {
+              <button
+                type="button"
+                [class.selected]="i === mainImageIndex()"
+                [attr.aria-label]="'Show product image ' + (i + 1)"
+                (click)="mainImageIndex.set(i)"
+              >
+                <img [src]="image.url" [alt]="product().title + ' image ' + (i + 1)" />
+              </button>
+            }
+          </div>
+        } @else {
+          <img
+            class="main-image"
+            src="/placeholder.jpg"
+            [alt]="product().title || 'Product image'"
+          />
+        }
       }
     </section>
 
     <section class="product-details">
-      <p class="eyebrow">{{ isSold() ? 'PAST WORK' : 'HANDCRAFTED' }}</p>
-      <h1>{{ product().title }}</h1>
-      <strong class="product-price">{{ product().price | currency }}</strong>
-      <div class="product-description" [innerHTML]="descriptionHtml()"></div>
-      <div class="contact-actions">
-        @if (admin_email()) {
-          <a
-            pButton
-            [href]="emailLink()"
-            [label]="isSold() ? 'Commission a similar piece' : 'Inquire about this piece'"
-            icon="pi pi-envelope"
-          ></a>
-        }
-        @if (admin_phone()) {
-          <a
-            pButton
-            [href]="phoneLink()"
-            label="Call"
-            icon="pi pi-phone"
+      @if (isEditing()) {
+        <p class="eyebrow">EDIT PRODUCT</p>
+        <div class="edit-fields">
+          <label>
+            Title
+            <input
+              type="text"
+              [(ngModel)]="editTitle"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="saving()"
+            />
+          </label>
+          <label>
+            Web slug
+            <input
+              type="text"
+              [(ngModel)]="editSlug"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="saving()"
+            />
+          </label>
+          <label>
+            Price
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="editPrice"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="saving()"
+            />
+          </label>
+          <label>
+            Description (Markdown supported)
+            <textarea
+              [(ngModel)]="editDescription"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="saving()"
+              rows="8"
+            ></textarea>
+          </label>
+          <label class="sold-toggle">
+            <input
+              type="checkbox"
+              [(ngModel)]="editSold"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="saving()"
+            />
+            Mark as sold / past work
+          </label>
+        </div>
+        <div class="edit-actions">
+          <p-button
+            label="Save changes"
+            icon="pi pi-check"
+            [loading]="saving()"
+            [disabled]="saving() || deleting()"
+            (onClick)="saveProduct()"
+          />
+          <p-button
+            label="Cancel"
             severity="secondary"
             [outlined]="true"
-          ></a>
+            [disabled]="saving() || deleting()"
+            (onClick)="cancelEditing()"
+          />
+        </div>
+        @if (editError()) {
+          <p class="edit-error" role="alert">{{ editError() }}</p>
         }
-      </div>
+      } @else {
+        <p class="eyebrow">{{ isSold() ? 'PAST WORK' : 'HANDCRAFTED' }}</p>
+        <h1>{{ product().title }}</h1>
+        <strong class="product-price">{{ product().price | currency }}</strong>
+        <div class="product-description" [innerHTML]="descriptionHtml()"></div>
+        <div class="contact-actions">
+          @if (admin_email()) {
+            <a
+              pButton
+              [href]="emailLink()"
+              [label]="isSold() ? 'Commission a similar piece' : 'Inquire about this piece'"
+              icon="pi pi-envelope"
+            ></a>
+          }
+          @if (admin_phone()) {
+            <a
+              pButton
+              [href]="phoneLink()"
+              label="Call"
+              icon="pi pi-phone"
+              severity="secondary"
+              [outlined]="true"
+            ></a>
+          }
+        </div>
+      }
     </section>
   </div>
+
+  @if (isEditing()) {
+    <section class="danger-zone" aria-labelledby="delete-product-heading">
+      <div>
+        <h2 id="delete-product-heading">Delete product</h2>
+        <p>Remove this product and its images permanently. This action cannot be undone.</p>
+      </div>
+      <p-button
+        label="Delete product"
+        icon="pi pi-trash"
+        severity="danger"
+        [outlined]="true"
+        [disabled]="saving() || deleting()"
+        (onClick)="requestDelete()"
+      />
+    </section>
+  }
 </main>
+
+<p-dialog
+  header="Delete this product?"
+  [visible]="confirmingDelete()"
+  (visibleChange)="confirmingDelete.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="!deleting()"
+  [dismissableMask]="!deleting()"
+  [style]="{ width: 'min(28rem, calc(100vw - 2rem))' }"
+  styleClass="delete-product-dialog"
+  (onHide)="cancelDelete()"
+>
+  <div class="delete-confirmation">
+    <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+    <p>
+      <strong>{{ product().title }}</strong> and all of its images will be permanently deleted.
+      This cannot be undone.
+    </p>
+  </div>
+  @if (deleteError()) {
+    <p class="edit-error" role="alert">{{ deleteError() }}</p>
+  }
+  <ng-template #footer>
+    <p-button
+      label="Keep product"
+      severity="secondary"
+      [outlined]="true"
+      [disabled]="deleting()"
+      (onClick)="cancelDelete()"
+    />
+    <p-button
+      label="Delete permanently"
+      icon="pi pi-trash"
+      severity="danger"
+      [loading]="deleting()"
+      [disabled]="deleting()"
+      (onClick)="deleteProduct()"
+    />
+  </ng-template>
+</p-dialog>

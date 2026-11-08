@@ -9,3 +9,9 @@ enabled = true
 verify_jwt = false
 import_map = "./functions/payments-webhook/deno.json"
 entrypoint = "./functions/payments-webhook/index.ts"
+
+[functions.manage-products]
+enabled = true
+verify_jwt = true
+import_map = "./functions/manage-products/deno.json"
+entrypoint = "./functions/manage-products/index.ts"

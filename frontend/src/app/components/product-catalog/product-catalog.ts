@@ -3,6 +3,7 @@ import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Product } from '../../models/product';
+import { markdownToText } from '../../utils/markdown';
 
 @Component({
   selector: 'app-product-catalog',
@@ -11,6 +12,7 @@ import { Product } from '../../models/product';
   styleUrl: './product-catalog.scss',
 })
 export class ProductCatalog {
+  readonly markdownToText = markdownToText;
   products = input.required<Product[]>();
   eyebrow = input.required<string>();
   title = input.required<string>();

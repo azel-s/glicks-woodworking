@@ -1,8 +1,10 @@
 <main class="create-page">
   <header class="page-heading">
-    <p>PRODUCTS</p>
-    <h1>Create a product</h1>
-    <span>Add the product details and images for your shop.</span>
+    <div>
+      <p>PRODUCTS</p>
+      <h1>Create a product</h1>
+      <span>Add the product details and images for your shop.</span>
+    </div>
   </header>
 
   <section class="form-card" aria-label="Product details">
@@ -40,8 +42,7 @@
           [(ngModel)]="temp_product.description"
           #descriptionModel="ngModel"
           [invalid]="
-            !temp_product.description.trim() &&
-            (descriptionModel.dirty || descriptionModel.touched)
+            !temp_product.description.trim() && (descriptionModel.dirty || descriptionModel.touched)
           "
           required
           placeholder="Describe the materials, details, and craftsmanship."
@@ -79,13 +80,15 @@
         id="image-upload"
         type="file"
         accept="image/*"
+        multiple
         (change)="addImage($event)"
         hidden
       />
       <p-button
-        label="Add image"
+        [label]="temp_images().length >= 10 ? 'Image limit reached' : 'Add images'"
         icon="pi pi-plus"
         [outlined]="true"
+        [disabled]="temp_images().length >= 10 || saving"
         (onFocus)="imageTouched = true"
         (onClick)="imageInput.click()"
       />
@@ -149,6 +152,10 @@
     }
   </section>
 
+  @if (createError) {
+    <p class="create-error" role="alert">{{ createError }}</p>
+  }
+
   <div class="form-actions">
     @if (missingRequirements.length) {
       <p class="form-hint" aria-live="polite">
@@ -158,7 +165,9 @@
     <p-button
       label="Create product"
       icon="pi pi-check"
-      [disabled]="missingRequirements.length > 0"
+      [loading]="saving"
+      [disabled]="missingRequirements.length > 0 || saving"
+      (onClick)="createProduct()"
     />
   </div>
 </main>
