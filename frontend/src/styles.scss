@@ -3,14 +3,26 @@
 }
 
 :root {
+  color-scheme: light;
   --wood-accent: #8a5a36;
   --wood-soft: #f5eee7;
   --wood-canvas: #fcfaf8;
+  --wood-text: #30251f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --wood-accent: #d3a17d;
+    --wood-soft: #29231f;
+    --wood-canvas: #171513;
+    --wood-text: #f5eee7;
+  }
 }
 
 body {
   margin: 0;
   background: var(--wood-canvas);
-  color: var(--p-text-color);
+  color: var(--wood-text);
   font-family: var(--p-font-family, system-ui, sans-serif);
 }

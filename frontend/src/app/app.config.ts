@@ -28,6 +28,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    providePrimeNG({ theme: { preset: WoodworkPreset } }),
+    providePrimeNG({
+      theme: {
+        preset: WoodworkPreset,
+        options: { darkModeSelector: 'system' },
+      },
+    }),
   ]
 };
