@@ -54,7 +54,7 @@
           "configurations": {
             "production": {
               "outputPath": {
-                "base": "../docs",
+                "base": "dist/cloudflare",
                 "browser": ""
               },
               "budgets": [
