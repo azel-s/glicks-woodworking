@@ -1,9 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "glicks-woodworking",
+  "main": "./worker/index.js",
   "compatibility_date": "2026-11-08",
   "assets": {
     "directory": "./dist/glicks-woodworking/browser",
-    "not_found_handling": "single-page-application"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/product/*"],
+  },
 }
